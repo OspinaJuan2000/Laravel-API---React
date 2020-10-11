@@ -1,0 +1,94 @@
+// TESTING HTTP using API_TOKEN.
+
+// VARIABLE API LARAVEL.
+@hostname = http://localhost:8000/api
+@users = /users
+
+
+// LOGIN.
+POST {{hostname}}/login
+Accept: application/json
+Content-Type: application/json
+
+{
+    "email": "", //YOUR EMAIL IN THE DATABASE.
+    "password": "" // YOUR PASSWORD IN THE DATABASE
+}
+
+###
+
+// GET ALL USERS.
+GET {{hostname}}{{users}}
+Accept: application/json
+Content-Type: application/json
+//Authorization: ADD Bearer + TOKEN
+
+###
+
+// GET USER BY ID.
+GET {{hostname}}{{users}}/2
+Accept: application/json
+Content-Type: application/json
+//Authorization: ADD Bearer + TOKEN
+
+###
+
+// GET USER FILTERING THE NAME
+GET {{hostname}}{{users}}?txtSearch=Avis
+Accept: application/json
+Content-Type: application/json
+//Authorization: ADD Bearer + TOKEN
+
+###
+
+// GET THE USER FILTERING THE EMAIL
+GET {{hostname}}{{users}}?txtSearch=@example.com
+Accept: application/json
+Content-Type: application/json
+//Authorization: ADD Bearer + TOKEN
+
+###
+
+// CREATE A NEW USER
+POST {{hostname}}{{users}}
+Accept: application/json
+Content-Type: application/json
+//Authorization: ADD Bearer + TOKEN
+
+{
+    "name": "name",
+    "email": "correo@correo.com",
+    "password": "password",
+    "image": "http://lorempixel.com/800/600/people/"
+}
+
+###
+
+//UPDATE AN USER
+PUT {{hostname}}{{users}}/2
+Accept: application/json
+Content-Type: application/json
+//Authorization: ADD Bearer + TOKEN
+
+{
+    "name": "new name",
+    "email": "newcorreo@correo.com",
+    "password": "newpassword",
+    "image": "http://lorempixel.com/800/600/people/"
+}
+
+###
+
+//DELETE AN USER
+DELETE {{hostname}}{{users}}/5
+Accept: application/json
+Content-Type: application/json
+//Authorization: ADD Bearer + TOKEN
+
+###
+
+// LOGOUT SESSION WITH THE USER AUTHENTICATED.
+POST {{hostname}}/logout
+Accept: application/json
+Content-Type: application/json
+//Authorization: ADD Bearer + TOKEN
