@@ -2,15 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use Carbon\Carbon;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Redis;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
-use App\Http\Resources\CreateUserRequest as ResourcesCreateUserRequest;
+use App\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
@@ -20,57 +16,49 @@ class UsersController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function login (Request $request) {
+    public function login(Request $request)
+    {
 
         $user = User::whereEmail($request->email)->first();
 
         if ($user && Hash::check($request->password, $user->password)) {
+            $token = $user->createToken('api')->accessToken;
 
-            if (!$user->api_token) {
-                
-                $user->api_token = Str::random(100);
-                $user->update();
-
-                return response()->json([
-                    'response' => true,
-                    'message' => 'Welcome to the system, you\'re now authenticaded',
-                    'token' => $user->api_token
-                ]);
-
-            } else {
-                return response()->json([
-                    'response' => false,
-                    'message' => 'This user have authentication'
-                ]);
-            }
+            return response()->json([
+                'response' => true,
+                'message' => 'Welcome to the system, you\'re now authenticaded',
+                'token' => $token,
+            ]);
         }
 
         return response()->json([
             'response' => false,
             'message' => 'User and/or password incorrect',
-        ]); 
+        ]);
     }
 
-    public function logout () {
+    public function logout()
+    {
 
         $user = auth()->user();
-        $user->api_token = null;
-        $user->update();
+        $user->tokens->each(function($token, $key) {
+            $token->delete();
+        });
 
         return response()->json([
             'response' => true,
             'message' => 'Logout succesfully, goodbye',
         ]);
     }
-     
+
     public function index(Request $request)
-    {   
+    {
         if ($request->has('txtSearch')) {
             $users = User::where('name', 'like', '%' . $request->txtSearch . '%')
-            ->orWhere('email', 'like', '%' . $request->txtSearch . '%')
-            ->get();
+                ->orWhere('email', 'like', '%' . $request->txtSearch . '%')
+                ->get();
 
-            return $users;  
+            return $users;
         }
         return User::all();
     }

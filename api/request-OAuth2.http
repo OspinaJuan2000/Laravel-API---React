@@ -1,11 +1,10 @@
-# TESTING HTTP using API_TOKEN.
+# TESTING HTTP using OAuth2.
 
 # VARIABLE API LARAVEL.
 @hostname = http://localhost:8000/api
 @users = /users
 
-
-# LOGIN.
+# LOGIN
 POST {{hostname}}/login
 Accept: application/json
 Content-Type: application/json
@@ -14,8 +13,8 @@ Content-Type: application/json
 # passowrd: YOUR PASSWORD IN THE DATABASE
 
 {
-    "email": "ospinajuan2000@gmail.com",
-    "password": "juanpro25" 
+    "email": "ospinajuan2000@gmail.com", 
+    "password": "juanpro25"
 }
 
 ###
@@ -37,7 +36,7 @@ Content-Type: application/json
 ###
 
 # GET USER FILTERING THE NAME
-GET {{hostname}}{{users}}?txtSearch=Ad
+GET {{hostname}}{{users}}?txtSearch=Avis
 Accept: application/json
 Content-Type: application/json
 # Authorization: ADD Bearer + TOKEN
@@ -56,12 +55,12 @@ Content-Type: application/json
 POST {{hostname}}{{users}}
 Accept: application/json
 Content-Type: application/json
-# Authorization: ADD Bearer + TOKEN
+# Authorization: ADD Bearer + TOKEN 
 
 {
-    "name": "name",
-    "email": "correo@correo.com",
-    "password": "password",
+    "name": "user",
+    "email": "user@gmail.com",
+    "password": "user",
     "image": "http://lorempixel.com/800/600/people/"
 }
 
@@ -83,7 +82,7 @@ Content-Type: application/json
 ###
 
 # DELETE AN USER
-DELETE {{hostname}}{{users}}/5
+DELETE {{hostname}}{{users}}/21
 Accept: application/json
 Content-Type: application/json
 # Authorization: ADD Bearer + TOKEN
